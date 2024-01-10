@@ -1,0 +1,13 @@
+{
+	"n_targets": 252835,
+	"n_bootstraps": 100,
+	"n_processed": 25717690,
+	"n_pseudoaligned": 20825035,
+	"n_unique": 5625499,
+	"p_pseudoaligned": 81.0,
+	"p_unique": 21.9,
+	"kallisto_version": "0.50.1",
+	"index_version": 13,
+	"start_time": "Wed Jan 10 13:51:37 2024",
+	"call": "/home/mikasaka/tools/kallisto/kallisto quant -i ref/kallisto_index0_50_0 -o kallisto_b/DRR357082 -t 4 -b 100 --rf-stranded fastq/DRR357082_1.trim.fq.gz fastq/DRR357082_2.trim.fq.gz"
+}

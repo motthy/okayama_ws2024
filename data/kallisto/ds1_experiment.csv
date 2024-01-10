@@ -1,0 +1,6 @@
+sample,treatment,path
+DRR357080,DMSO, ~/Documents/lecture/okayama_ws/dataset1/kallisto_bootstrap/DRR357080
+DRR357081,DMSO, ~/Documents/lecture/okayama_ws/dataset1/kallisto_bootstrap/DRR357081
+DRR357082,5H4PB, ~/Documents/lecture/okayama_ws/dataset1/kallisto_bootstrap/DRR357082
+DRR357083,5H4PB, ~/Documents/lecture/okayama_ws/dataset1/kallisto_bootstrap/DRR357083
+DRR357084,5H4PB, ~/Documents/lecture/okayama_ws/dataset1/kallisto_bootstrap/DRR357084

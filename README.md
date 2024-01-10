@@ -1,2 +1,5 @@
-# okayama_ws2024
-RNA-seq analysis workshop, from 2024-02-06 to 2024-02-08
+# 岡山大学　RNA-seq解析ハンズオン　資料
+
+from 2024-02-06 to 2024-02-08
+
+
