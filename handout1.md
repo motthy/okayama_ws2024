@@ -256,7 +256,7 @@ ls -l
 
 ジョブが完了すると、fastqディレクトリの中にDRR357080~DRR357084のfastqができる。
 ```{sh}
-$ ls -l fastq
+ls -l fastq
 ```
 
 出力例
@@ -345,7 +345,7 @@ total 40242856
 
 `fasterq-dump`がうまくいかない　or なかなかジョブが入らない場合、`/home/ayanosatoh/Bioinfo2024/fastq`にgz圧縮済みのfastqファイルを置いてあるので、こちらのファイルを使ってください。
 ```{sh}
-$ ls -l /home/ayanosatoh/Bioinfo2024/fastq
+ls -l /home/ayanosatoh/Bioinfo2024/fastq
 ```
 
 ## RNA-seqデータのクオリティチェック
@@ -406,7 +406,7 @@ $SIMS fastp -i fastq/${DRR}_1.fastq.gz \
 `qc_fq.sh`として保存、`qsub`で投入
 
 ```{sh}
-$ qsub qc_fq.sh
+qsub qc_fq.sh
 ```
 
 ジョブが完了したら結果を確認する。
