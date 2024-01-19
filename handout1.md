@@ -125,6 +125,67 @@ mkdir okayama_ws
 cd okayama_ws
 ```
 
+### お試し
+
+fastqの取得からQCまでの実行例（1サンプル分のみ）を以下に示す。
+
+（スパコンを利用しているなど、ストレージに余裕がある場合は、次の「**fastq取得**」から始めてください）
+
+お試し用ディレクトリの作成
+```{sh}
+mkdir test
+```
+
+1. fastq取得
+
+`-O`オプションで出力先を指定、末尾に&をつけてバックグラウンド実行
+```{sh}
+fasterq-dump DRR357080 -O test　&
+```
+
+2. fastq圧縮
+
+testディレクトリへ移動
+```{sh}
+cd test
+```
+
+DRR357080_1.fastqを`gzip`で圧縮（&をつけてバックグラウンド実行）
+```{sh}
+gzip DRR357080_1.fastq &
+```
+
+同じようにDRR357080_2.fastqも圧縮（&をつけてバックグラウンド実行）
+```
+gzip DRR357080_2.fastq &
+```
+
+完了後、testディレクトリに以下のファイルがあることを確認
+- DRR357080_1.fastq.gz
+- DRR357080_2.fastq.gz
+
+
+3. QC
+
+fastpでクオリティチェックとトリミング（&をつけてバックグラウンド実行）
+```{sh}
+fastp -i DRR357080_1.fastq.gz -o DRR357080_1.trim.fq.gz -I DRR357080_2.fastq.gz -O DRR357080_2.trim.fq.gz -h DRR357080_fastp_report.html &
+```
+- -i、-I  入力fastq
+- -o、-O　出力fastq(トリミング後)
+- -h QC結果ファイル（html）
+
+完了後、testディレクトリに以下のファイルがあることを確認
+- DRR357080_1.fastq.gz
+- DRR357080_2.fastq.gz
+- DRR357080_1.trim.fq.gz
+- DRR357080_2.trim.fq.gz
+- DRR357080_fastp_report.html
+
+### fastq取得
+スパコンを利用している場合、バッチジョブまたはアレイジョブでデータセットをまとめて取得することができる。
+(localではforループを使ったバッチジョブなら可能)
+
 fastqとlogを入れるディレクトリを作る
 
 ```{sh}
@@ -132,11 +193,6 @@ mkdir fastq logs
 ```
 
 SRAToolkitの`fasterq-dump`でfastqを取得、**a~cのいずれか**で実行する。
-
-基本のコマンド; `-O`オプションで出力先を指定、末尾に&をつけてバックグラウンド実行
-```{sh}
-fasterq-dump DRR357080 -O fastq　&
-```
 
 a. forループをつかったスクリプトにして、qsubで投入
 ```{get_fq.sh}
