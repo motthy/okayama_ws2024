@@ -143,10 +143,11 @@ mkdir test
 
 1. fastq取得
 
-`-O`オプションで出力先を指定、末尾に&をつけてバックグラウンド実行
+fasterq-dumpで
 ```{sh}
 fasterq-dump DRR357080 -O test &
 ```
+`-O`オプションで出力先を指定、末尾に&をつけてバックグラウンド実行
 
 2. fastq圧縮
 
@@ -496,4 +497,45 @@ $SIMS fastp -i ${FQDIR}/${DRR}_1.fastq.gz \
             -h fastp/${DRR}_fastp_report.html \
             -j fastp/${DRR}_fastp_report.json \
             -w 4
+```
+
+## 参考（遺伝研スパコンのshared_data）
+
+DDBJ SearchでDRA(SRA) accessionを検索、Downloadの項の「fastq」にリンクがあれば、スパコンの`/usr/local/shared_data/dra/fastq/`以下にfastq（bzip2圧縮）がある。
+
+例: DRR357080 https://ddbj.nig.ac.jp/resource/sra-run/DRR357080
+
+sra-submission(DRA013778)とsra-experiment(DRX342991)からディレクトリを探す
+
+```{sh}
+ls -l /usr/local/shared_data/dra/fastq/DRA013/DRA013778
+total 60
+-rw-r--r-- 1 tracesys tracesys 12989 Nov  2  2022 DRA013778.experiment.xml
+-rw-r--r-- 1 tracesys tracesys  1257 Nov  2  2022 DRA013778.run.xml
+-rw-r--r-- 1 tracesys tracesys  9734 Nov  2  2022 DRA013778.sample.xml
+-rw-r--r-- 1 tracesys tracesys  1347 Nov  2  2022 DRA013778.study.xml
+-rw-r--r-- 1 tracesys tracesys   243 Nov  2  2022 DRA013778.submission.xml
+drwxr-xr-x 2 tracesys tracesys  4096 Nov  2  2022 DRX342991
+drwxr-xr-x 2 tracesys tracesys  4096 Nov  2  2022 DRX342992
+drwxr-xr-x 2 tracesys tracesys  4096 Nov  2  2022 DRX342993
+drwxr-xr-x 2 tracesys tracesys  4096 Nov  2  2022 DRX342994
+drwxr-xr-x 2 tracesys tracesys  4096 Nov  2  2022 DRX342995
+```
+
+fastqの場所
+```{sh}
+ls -l /usr/local/shared_data/dra/fastq/DRA013/DRA013778/DRX342991
+total 7169212
+-rw-r--r-- 1 tracesys tracesys 3537298471 Apr  1  2022 DRR357080_1.fastq.bz2
+-rw-r--r-- 1 tracesys tracesys 3803962633 Apr  1  2022 DRR357080_2.fastq.bz2
+```
+bz2をそのまま使えないツールの場合、自分の`$HOME`以下にコピーし、解凍して使う（さらにgz圧縮する場合もある）
+
+今回使用したデータセットPRJDB13297のfastqのPATH
+```{sh}
+/usr/local/shared_data/dra/fastq/DRA013/DRA013778/DRX342991
+/usr/local/shared_data/dra/fastq/DRA013/DRA013778/DRX342992
+/usr/local/shared_data/dra/fastq/DRA013/DRA013778/DRX342993
+/usr/local/shared_data/dra/fastq/DRA013/DRA013778/DRX342994
+/usr/local/shared_data/dra/fastq/DRA013/DRA013778/DRX342995
 ```
