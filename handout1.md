@@ -29,15 +29,15 @@ fastp --version
 遺伝研スパコンの場合、`fastp 0.20.1`と表示（2024-01-15）
 
 今回利用するコマンドのバージョン（遺伝研スパコン`/usr/bin/`以下）
-```
-"fasterq-dump" version 2.11.3
 
-/usr/bin/bowtie2-align-s version 2.4.4
+- fasterq-dump version 2.11.3
 
-RSEM v1.3.1
+- /usr/bin/bowtie2-align-s version 2.4.4
 
-kallisto version 0.46.2
-```
+- RSEM v1.3.1
+
+- kallisto version 0.46.2
+
 
 Apptainer(singularity)コンテナを利用する場合、`/usr/local/biotools/ツールの頭文字/`以下から目的のツールのコンテナを探す。たとえば、rsemを探したいときは
 ```{sh}
@@ -115,6 +115,11 @@ https://www.ncbi.nlm.nih.gov/Traces/study/?acc=DRP009171&o=acc_s%3Aa
 | DRR357083 | SAMD00451570 | 5H4PB処理 |
 | DRR357084 | SAMD00451571 | 5H4PB処理 |
 
+homeに移動
+```{sh}
+cd ~
+```
+
 作業ディレクトリ `okayama_ws`をつくる
 ```{sh}
 mkdir okayama_ws
@@ -140,7 +145,7 @@ mkdir test
 
 `-O`オプションで出力先を指定、末尾に&をつけてバックグラウンド実行
 ```{sh}
-fasterq-dump DRR357080 -O test　&
+fasterq-dump DRR357080 -O test &
 ```
 
 2. fastq圧縮
