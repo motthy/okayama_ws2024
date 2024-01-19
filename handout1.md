@@ -243,13 +243,13 @@ $SIMS fasterq-dump ${FQLIST[SGE_TASK_ID - 1]} -O fastq
 
 a~c のいずれかを`get_fq.sh`として保存、`qsub`でジョブ投入
 ```
-$ qsub get_fq.sh
+qsub get_fq.sh
 ```
 
-（aまたはbの実行中）途中経過として`fastq`ディレクトリを見る。
+（aまたはbの実行中）途中経過としてカレントディレクトリを見る。
 
 ```{sh}
-ls -l fastq
+ls -l
 ```
 `fasterq.tmp.xxxx`というディレクトリができている。そのなかに、`fasterq-dump`の中間ファイルがある。
 
@@ -400,7 +400,7 @@ $SIMS fastp -i fastq/${DRR}_1.fastq.gz \
  -j fastp/${DRR}_fastp_report.json \
  -w 4
 ```
-`~.json`を作っておくと細かい情報が得られる
+`~.json`を作っておくと、より詳細な情報が得られる
 
 `qc_fq.sh`として保存、`qsub`で投入
 
@@ -446,3 +446,54 @@ total 80079420
 などである。ほかの記載事項は以下を参考にしてほしい。
 
 fastpのGitHubページ　https://github.com/OpenGene/fastp
+
+### 参考（講習会用の共有データの利用）
+
+`/home/ayanosatoh/Bioinfo2024/fastq`にあるgz圧縮済みのfastqファイルを使用する場合のスクリプト
+
+a.アレイジョブで実行
+```{qc_fq.sh}
+#$ -S /bin/bash
+#$ -pe def_slot 4
+#$ -cwd
+#$ -l mem_req=4G s_vmem=4G
+#$ -t 1-5:1
+#$ -o logs
+#$ -e logs
+
+FQLIST=("DRR357080" "DRR357081" "DRR357082" "DRR357083" "DRR357084")
+DRR=${FQLIST[SGE_TASK_ID - 1]}
+FQDIR=/home/ayanosatoh/Bioinfo2024/fastq
+
+fastp -i ${FQDIR}/${DRR}_1.fastq.gz \
+      -o fastq/${DRR}_1.trim.fq.gz \
+      -I ${FQDIR}/${DRR}_2.fastq.gz \
+      -O fastq/${DRR}_2.trim.fq.gz \
+      -h fastp/${DRR}_fastp_report.html \
+      -j fastp/${DRR}_fastp_report.json \
+      -w 4
+```
+
+b.singularityコンテナを利用し、アレイジョブで実行
+```{qc_fq.sh}
+#$ -S /bin/bash
+#$ -pe def_slot 4
+#$ -cwd
+#$ -l mem_req=4G s_vmem=4G
+#$ -t 1-5:1
+#$ -o logs
+#$ -e logs
+
+SIMS="singularity exec -B /home/ayanosatoh/Bioinfo2024/fastq /usr/local/biotools/f/fastp:0.23.4--hadf994f_2"
+FQLIST=("DRR357080" "DRR357081" "DRR357082" "DRR357083" "DRR357084")
+DRR=${FQLIST[SGE_TASK_ID - 1]}
+FQDIR=/home/ayanosatoh/Bioinfo2024/fastq
+
+$SIMS fastp -i ${FQDIR}/${DRR}_1.fastq.gz \
+            -o fastq/${DRR}_1.trim.fq.gz \
+            -I ${FQDIR}/${DRR}_2.fastq.gz \
+            -O fastq/${DRR}_2.trim.fq.gz \
+            -h fastp/${DRR}_fastp_report.html \
+            -j fastp/${DRR}_fastp_report.json \
+            -w 4
+```
