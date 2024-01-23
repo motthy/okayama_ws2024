@@ -293,8 +293,8 @@ FQLIST=("DRR357080" "DRR357081" "DRR357082" "DRR357083" "DRR357084")
 cd fastq
 
 for FQ in ${FQLIST[@]};do
-    gzip ${FQLIST[SGE_TASK_ID - 1]}_1.fastq
-    gzip ${FQLIST[SGE_TASK_ID - 1]}_2.fastq
+    gzip ${FQ}_1.fastq
+    gzip ${FQ}_2.fastq
 done
 ```
 
