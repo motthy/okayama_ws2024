@@ -2,8 +2,6 @@
 
 condaの仮想環境を使って、RNA-seqの解析ツールをインストールします。
 
-**注意 : MacでHomebrewを使っている人はやらないでください**（要相談）
-
 ## 1. miniforgeのインストール
 
 miniforge
@@ -12,6 +10,11 @@ https://github.com/conda-forge/miniforge
 上記リンク先から、自分のOSに対応したインストーラをダウンロードし、説明に沿ってインストールしてください。
 
 M1/M2 Macの場合は **arm64 (Apple Silicon)** を選んでください。
+
+**MacでHomebrewを使っている場合はbrewでインストールしてください**
+```{sh}
+brew install miniforge
+```
 
 ## 2. 仮想環境の作成
 
