@@ -425,7 +425,8 @@ a.アレイジョブで実行
 #$ -S /bin/bash
 #$ -pe def_slot 4
 #$ -cwd
-#$ -l mem_req=4G s_vmem=4G
+#$ -l mem_req=4G
+#$ -l s_vmem=4G
 #$ -t 1-5:1
 #$ -o logs
 #$ -e logs
@@ -447,7 +448,8 @@ b.singularityコンテナを利用し、アレイジョブで実行
 #$ -S /bin/bash
 #$ -pe def_slot 4
 #$ -cwd
-#$ -l mem_req=4G s_vmem=4G
+#$ -l mem_req=4G
+#$ -l s_vmem=4G
 #$ -t 1-5:1
 #$ -o logs
 #$ -e logs
@@ -520,7 +522,8 @@ a.アレイジョブで実行
 #$ -S /bin/bash
 #$ -pe def_slot 4
 #$ -cwd
-#$ -l mem_req=4G s_vmem=4G
+#$ -l mem_req=4G
+#$ -l s_vmem=4G
 #$ -t 1-5:1
 #$ -o logs
 #$ -e logs
@@ -543,7 +546,8 @@ b.singularityコンテナを利用し、アレイジョブで実行
 #$ -S /bin/bash
 #$ -pe def_slot 4
 #$ -cwd
-#$ -l mem_req=4G s_vmem=4G
+#$ -l mem_req=4G
+#$ -l s_vmem=4G
 #$ -t 1-5:1
 #$ -o logs
 #$ -e logs
