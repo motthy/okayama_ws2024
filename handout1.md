@@ -84,12 +84,14 @@ kallisto/kallisto version
 ```
 
 ### localの環境構築
-もし遺伝研スパコンを利用しない場合、condaを使って環境構築をすることをおすすめする。以下の例では、rnaseq_envという仮想環境をつくり、そのなかにsratoolkit、rsem、bowtie2、kallistoをインストールする方法を紹介する。
+もし遺伝研スパコンを利用しない場合、condaを使って環境構築をすることをおすすめする。以下の例では、rnaseq_envという仮想環境をつくり、そのなかにsratoolkit、fastp、rsem、bowtie2、kallistoをインストールする方法を紹介する。
 
 ```
 conda create -n rnaseq_env
 conda activate rnaseq_env
-conda install conda install bioconda::sra-tools
+conda install bioconda::sra-tools
+conda install bioconda::fastp
+conda install bioconda::bowtie2
 conda install bioconda::rsem
 conda install bioconda::kallisto
 ```
@@ -275,6 +277,35 @@ total 125509648
 ```
 アレイジョブで実行して2時間くらいかかった。この時点のデータ容量は130GBなので、自分のパソコンで実行している人はストレージの空き容量に注意。
 
+**conda仮想環境で実行する場合**
+
+仮想環境rnaseq_envを有効化しておく（やっていない場合）
+```{sh}
+conda activate rnaseq_env
+```
+
+forループをつかったスクリプト
+```{get_fq.sh}
+#!/bin/bash
+
+FQLIST=("DRR357080" "DRR357081" "DRR357082" "DRR357083" "DRR357084")
+
+for FQ in ${FQLIST[@]};do
+    fasterq-dump $FQ -O fastq
+done
+```
+`get_fq.sh`として保存
+
+実行権限をつける
+```{sh}
+chmod 750 get_fq.sh
+```
+
+実行
+```{sh}
+./get_fq.sh
+```
+
 ### fastqの圧縮
 
 fastqのままではストレージを圧迫するのでgz圧縮しておく。最近のツールはgz圧縮したfastqを解凍せずに読み込んでくれるものが多い。今回利用するrsemやkallistoもgz圧縮したfastqを入力することができる。
@@ -317,12 +348,12 @@ gzip ${FQLIST[SGE_TASK_ID - 1]}_2.fastq
 aまたはbを`compress_fq.sh`として保存、`qsub`でジョブ投入
 
 ```
-$ qsub compress_fq.sh
+qsub compress_fq.sh
 ```
 
 （aまたはbの実行が終わったら）圧縮できているかどうか確認する。
 ```{sh}
-$ ls -l fastq
+ls -l fastq
 ```
 
 出力例
@@ -340,6 +371,38 @@ total 40242856
 -rw-rw-r-- 1 youraccount yourgroup 4730558757 Dec 27 20:20 DRR357084_2.fastq.gz
 ```
 アレイジョブで40分くらいかかった。
+
+**conda仮想環境で実行する場合**
+
+仮想環境rnaseq_envを有効化しておく（やっていない場合）
+```{sh}
+conda activate rnaseq_env
+```
+
+forループをつかったスクリプト
+```{compress_fq.sh}
+#!/bin/bash
+
+FQLIST=("DRR357080" "DRR357081" "DRR357082" "DRR357083" "DRR357084")
+
+cd fastq
+
+for FQ in ${FQLIST[@]};do
+    gzip ${FQ}_1.fastq
+    gzip ${FQ}_2.fastq
+done
+```
+`compress_fq.sh`として保存
+
+実行権限をつける
+```{sh}
+chmod 750 compress_fq.sh
+```
+
+実行
+```{sh}
+./compress_fq.sh
+```
 
 ### 講習会用の共有データ
 
@@ -497,6 +560,41 @@ $SIMS fastp -i ${FQDIR}/${DRR}_1.fastq.gz \
             -h fastp/${DRR}_fastp_report.html \
             -j fastp/${DRR}_fastp_report.json \
             -w 4
+```
+
+**conda仮想環境で実行する場合**
+
+仮想環境rnaseq_envを有効化しておく（やっていない場合）
+```{sh}
+conda activate rnaseq_env
+```
+
+forループをつかったスクリプト
+```{qc_fq.sh}
+#!/bin/bash
+
+FQLIST=("DRR357080" "DRR357081" "DRR357082" "DRR357083" "DRR357084")
+
+for DRR in ${FQLIST[@]};do
+fastp -i fastq/${DRR}_1.fastq.gz \
+      -o fastq/${DRR}_1.trim.fq.gz \
+      -I fastq/${DRR}_2.fastq.gz \
+      -O fastq/${DRR}_2.trim.fq.gz \
+      -h fastp/${DRR}_fastp_report.html \
+      -j fastp/${DRR}_fastp_report.json \
+      -w 4
+done
+```
+`qc_fq.sh`として保存
+
+実行権限をつける
+```{sh}
+chmod 750 compress_fq.sh
+```
+
+実行
+```{sh}
+./qc_fq.sh
 ```
 
 ## 参考（遺伝研スパコンのshared_data）
