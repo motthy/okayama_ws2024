@@ -54,7 +54,8 @@ index作成スクリプト
 #$ -S /bin/bash
 #$ -pe def_slot 4
 #$ -cwd
-#$ -l mem_req=4G s_vmem=4G
+#$ -l mem_req=4G
+#$ -l s_vmem=4G
 
 rsem-prepare-reference --gtf gencode.v44.annotation.gtf \
 　　　　　　　　　　　　　　--bowtie2 \
@@ -80,7 +81,8 @@ cd ../okayama_ws
 #$ -S /bin/bash
 #$ -pe def_slot 4
 #$ -cwd
-#$ -l mem_req=4G s_vmem=4G
+#$ -l mem_req=4G
+#$ -l s_vmem=4G
 #$ -t 1-5:1
 #$ -o logs
 #$ -e logs
@@ -157,8 +159,8 @@ more ds1.isoforms.results |sed -r 's/\.[0-9]+\"/\"/g' > ds1.isoforms.results.ren
 
 つぎに、実験条件のcsvをつくる
 ```
-id,DRR357080,DRR357081,DRR357082,DRR357083,DRR357084
-treatment,DMSO,DMSO,5H4PB,5H4PB,5H4PB
+id DRR357080 DRR357081 DRR357082 DRR357083 DRR357084
+treatment DMSO DMSO 5H4PB 5H4PB 5H4PB
 ```
 `ds1_experiment.csv`として保存
 
@@ -187,7 +189,8 @@ indexを作成するスクリプト
 #$ -S /bin/bash
 #$ -pe def_slot 4
 #$ -cwd
-#$ -l mem_req=4G s_vmem=4G
+#$ -l mem_req=4G
+#$ -l s_vmem=4G
 
 ~/tools/kallisto/kallisto index -i kallisto_index gencode.v44.transcripts.fa.gz -k 31
 ```
@@ -272,16 +275,16 @@ library(tximport)
 library(tidyverse)
 
 # count table
-drr <- paste0("DRR",357080:357084)
-file_kallisto <- file.path("kallisto",drr,"abundance.h5")
+drr <- paste0("DRR", 357080:357084)
+file_kallisto <- file.path("kallisto", drr, "abundance.tsv")
 names(file_kallisto) <- drr
 txi.kallisto <- tximport(file_kallisto,
                          type = "kallisto",
                          txOut = TRUE)
 # transcripts-gene
 tx2gene <- data.frame(
-  TXNAME = rownames(txi.kallisto$counts),
-  GENEID = sapply(str_split(rownames(txi.kallisto$counts),'\\|'),'[', 2)
+  TXNAME = rownames(txi.kallisto$counts)
+  GENEID = sapply(str_split(rownames(txi.kallisto$counts), '\\|'), '[',  2)
 )
 
 write_tsv(tx2gene,
@@ -293,11 +296,11 @@ gene.exp_raw <- summarizeToGene(txi.kallisto,
 #head(gene.exp_raw$counts)
 rawcount <- data.frame(gene.exp_raw$counts) %>%
   rownames_to_column() %>%
-  separate(rowname, "\\.", into = c("gene_id", "postnum")) %>%
+  separate(rowname,  "\\.",  into = c("gene_id",  "postnum")) %>%
   dplyr::select(!postnum)
 
 write_tsv(rawcount,
-          file = "kallisto_count_raw.tsv")
+          file = "kallisto_count.tsv")
 
 # geneレベルの発現量(scaledTPM)
 # for edgeR or DESeq2
@@ -307,16 +310,18 @@ gene.exp <- summarizeToGene(txi.kallisto,
 #head(gene.exp$counts)
 tpm <- data.frame(gene.exp$counts) %>%
   rownames_to_column() %>%
-  separate(rowname, "\\.", into = c("gene_id", "postnum")) %>%
+  separate(rowname,  "\\.",  into = c("gene_id",  "postnum")) %>%
   dplyr::select(!postnum)
 
 write_tsv(tpm,
           file = "kallisto_scaledTPM.tsv")
 
 ```
-iDEPにはraw count`kallisto_count_raw.tsv`を入力する。
+iDEPにはcountデータ`kallisto_count.tsv`を入力する。
 
 edgeRやDEseq2にはscaledTPM`kallisto_scaledTPM.tsv`を使う。
+
+GitHubには、つづけてedgeRで2群間比較を行うスクリプト`kallisto_deg.r`を置きました。
 
 #### 参考：sleuthの利用
 本講習では扱いませんが、transcript levelのカウントテーブルだけ共有します。
@@ -339,4 +344,3 @@ rsemのカウントテーブル　-> data/rsem
 kallistoのカウントテーブル
 - tximportで作成したgene levelのカウント-> data/kallisto/tximport/
 - sleuthで作成したtranscript levelのカウント -> data/kallisto/kallisto_table.csv.gz
-
