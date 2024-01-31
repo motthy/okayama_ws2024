@@ -147,13 +147,13 @@ mkdir test
 
 fasterq-dumpでfastq を取得
 ```{sh}
-nohup fasterq-dump DRR357080 -O test &
+fasterq-dump DRR357080 -O test &
 ```
-- 接続が切れても大丈夫なように、コマンドの前に`nohup`をつける
+
 - `-O`オプションで出力先を指定
 - 末尾に`&`をつけてバックグラウンド実行
 
-2. fastq圧縮
+1. fastq圧縮
 
 testディレクトリへ移動
 ```{sh}
