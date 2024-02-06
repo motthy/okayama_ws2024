@@ -58,9 +58,9 @@ index作成スクリプト
 #$ -l s_vmem=4G
 
 rsem-prepare-reference --gtf gencode.v44.annotation.gtf \
-　　　　　　　　　　　　　　--bowtie2 \
-　　　　　　　　　　　　　　GRCh38.primary_assembly.genome.fa \
-　　　　　　　　　　　　　　human_gencode
+ --bowtie2 \
+ GRCh38.primary_assembly.genome.fa human_gencode
+
 ```
 
 これを`rsem_index.sh`として`ref`ディレクトリに保存、`qsub`で実行
@@ -91,12 +91,13 @@ FQLIST=("DRR357080" "DRR357081" "DRR357082" "DRR357083" "DRR357084")
 DRR=${FQLIST[SGE_TASK_ID - 1]}
 
 rsem-calculate-expression --paired-end -p 4 \
-                          --bowtie2 \
-						  --strandedness reverse \
-						  --estimate-rspd \
-						  fastq/${DRR}_1.trim.fq.gz \
-						  fastq/${DRR}_2.trim.fq.gz \
-						  ref/human_gencode rsem/$DRR
+ --bowtie2 \
+ --strandedness reverse \
+ --estimate-rspd \
+ fastq/${DRR}_1.trim.fq.gz \
+ fastq/${DRR}_2.trim.fq.gz \
+ ref/human_gencode rsem/$DRR
+
 ```
 
 `rsem_mapping.sh` として保存し、`qsub`で実行
@@ -239,11 +240,12 @@ FQLIST=("DRR357080" "DRR357081" "DRR357082" "DRR357083" "DRR357084")
 DRR=${FQLIST[SGE_TASK_ID - 1]}
 
 ~/tools/kallisto/kallisto quant -i ref/kallisto_index \
-               -o kallisto/$DRR \
-			   -t 4 -b 100\
-			   --rf-stranded \
-			   fastq/${DRR}_1.trim.fq.gz \
-			   fastq/${DRR}_2.trim.fq.gz
+ -o kallisto/$DRR \
+ -t 4 -b 100\
+ --rf-stranded \
+ fastq/${DRR}_1.trim.fq.gz \
+ fastq/${DRR}_2.trim.fq.gz
+
 ```
 
 `kallisto_count.sh`として保存、`qsub`で実行（shortノードでOK）
