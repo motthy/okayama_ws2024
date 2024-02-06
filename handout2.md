@@ -57,9 +57,7 @@ index作成スクリプト
 #$ -l mem_req=4G
 #$ -l s_vmem=4G
 
-rsem-prepare-reference --gtf gencode.v44.annotation.gtf \
- --bowtie2 \
- GRCh38.primary_assembly.genome.fa human_gencode
+rsem-prepare-reference --gtf gencode.v44.annotation.gtf --bowtie2 GRCh38.primary_assembly.genome.fa human_gencode
 
 ```
 
@@ -90,13 +88,7 @@ cd ../okayama_ws
 FQLIST=("DRR357080" "DRR357081" "DRR357082" "DRR357083" "DRR357084")
 DRR=${FQLIST[SGE_TASK_ID - 1]}
 
-rsem-calculate-expression --paired-end -p 4 \
- --bowtie2 \
- --strandedness reverse \
- --estimate-rspd \
- fastq/${DRR}_1.trim.fq.gz \
- fastq/${DRR}_2.trim.fq.gz \
- ref/human_gencode rsem/$DRR
+rsem-calculate-expression --paired-end -p 4 --bowtie2 --strandedness reverse --estimate-rspd fastq/${DRR}_1.trim.fq.gz fastq/${DRR}_2.trim.fq.gz ref/human_gencode rsem/$DRR
 
 ```
 
@@ -239,12 +231,7 @@ ls -l kallisto
 FQLIST=("DRR357080" "DRR357081" "DRR357082" "DRR357083" "DRR357084")
 DRR=${FQLIST[SGE_TASK_ID - 1]}
 
-~/tools/kallisto/kallisto quant -i ref/kallisto_index \
- -o kallisto/$DRR \
- -t 4 -b 100\
- --rf-stranded \
- fastq/${DRR}_1.trim.fq.gz \
- fastq/${DRR}_2.trim.fq.gz
+~/tools/kallisto/kallisto quant -i ref/kallisto_index -o kallisto/$DRR -t 4 -b 100 --rf-stranded fastq/${DRR}_1.trim.fq.gz fastq/${DRR}_2.trim.fq.gz
 
 ```
 
