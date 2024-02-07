@@ -595,7 +595,7 @@ done
 
 実行権限をつける
 ```{sh}
-chmod 750 compress_fq.sh
+chmod 750 qc_fq.sh
 ```
 
 実行
