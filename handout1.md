@@ -515,58 +515,6 @@ total 80079420
 
 fastpのGitHubページ　https://github.com/OpenGene/fastp
 
-### 参考（講習会用の共有データの利用）
-
-`/home/ayanosatoh/Bioinfo2024/fastq`にあるgz圧縮済みのfastqファイルを使用する場合のスクリプト
-
-a.アレイジョブで実行
-```{qc_fq.sh}
-#$ -S /bin/bash
-#$ -pe def_slot 4
-#$ -cwd
-#$ -l mem_req=4G
-#$ -l s_vmem=4G
-#$ -t 1-5:1
-#$ -o logs
-#$ -e logs
-
-FQLIST=("DRR357080" "DRR357081" "DRR357082" "DRR357083" "DRR357084")
-DRR=${FQLIST[SGE_TASK_ID - 1]}
-FQDIR=/home/ayanosatoh/Bioinfo2024/fastq
-
-fastp -i ${FQDIR}/${DRR}_1.fastq.gz \
-      -o fastq/${DRR}_1.trim.fq.gz \
-      -I ${FQDIR}/${DRR}_2.fastq.gz \
-      -O fastq/${DRR}_2.trim.fq.gz \
-      -h fastp/${DRR}_fastp_report.html \
-      -j fastp/${DRR}_fastp_report.json \
-      -w 4
-```
-
-b.singularityコンテナを利用し、アレイジョブで実行
-```{qc_fq.sh}
-#$ -S /bin/bash
-#$ -pe def_slot 4
-#$ -cwd
-#$ -l mem_req=4G
-#$ -l s_vmem=4G
-#$ -t 1-5:1
-#$ -o logs
-#$ -e logs
-
-SIMS="singularity exec -B /home/ayanosatoh/Bioinfo2024/fastq /usr/local/biotools/f/fastp:0.23.4--hadf994f_2"
-FQLIST=("DRR357080" "DRR357081" "DRR357082" "DRR357083" "DRR357084")
-DRR=${FQLIST[SGE_TASK_ID - 1]}
-FQDIR=/home/ayanosatoh/Bioinfo2024/fastq
-
-$SIMS fastp -i ${FQDIR}/${DRR}_1.fastq.gz \
-            -o fastq/${DRR}_1.trim.fq.gz \
-            -I ${FQDIR}/${DRR}_2.fastq.gz \
-            -O fastq/${DRR}_2.trim.fq.gz \
-            -h fastp/${DRR}_fastp_report.html \
-            -j fastp/${DRR}_fastp_report.json \
-            -w 4
-```
 
 **conda仮想環境で実行する場合**
 

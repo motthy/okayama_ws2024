@@ -237,7 +237,7 @@ DRR=${FQLIST[SGE_TASK_ID - 1]}
 
 `kallisto_count.sh`として保存、`qsub`で実行（shortノードでOK）
 ```
-qsub -l short kallisto_count.sh
+qsub kallisto_count.sh
 ```
 10分程度で終わる。各サンプル名のディレクトリに以下の3個のファイルができているはずである。
 
