@@ -126,24 +126,25 @@ qsub ーl short rsem_countmtx.sh
 cd rsem
 ```
 
-遺伝子IDは`ENSG00000001084.13`のような形式になっていて、このままではiDEPで遺伝子IDを変換できないので、 ".13" の部分をワンライナーで削除する
 
+`head` コマンドを使ってds1_all.genes.resultsを開くと、以下のようになっている（ここはスクリプトではないので実行しないこと）
 ```
  "rsem_idep/DRR357080.genes.results" "rsem_idep/DRR357081.genes.results" "rsem_idep/DRR357082.genes.results" "rsem_idep/DRR357083.genes.results" "rsem_idep/DRR357084.genes.results"
 "ENSG00000000003.16" 469.00 494.00 353.00 411.00 489.26
 "ENSG00000000005.6" 0.00 0.00 0.00 0.00 0.00
 ```
+遺伝子IDは`ENSG00000001084.13`のような形式になっていて、このままではiDEPで遺伝子IDを変換できないので、 ".13" の部分をワンライナーで削除する
 
 **ワンライナーによる処理**
 
 gene  levelのカウントテーブル
 ```
-more ds1_all.genes.results |sed -r 's/\.[0-9]+\"/\"/g' > ds1.genes.results.rename.tsv
+more ds1_all.genes.results |sed -r 's/\.[0-9]+\"/\"/g' > ds1_all.genes.results.rename.tsv
 ```
 
 transcript levelのカウントテーブル
 ```
-more ds1_all.isoforms.results |sed -r 's/\.[0-9]+\"/\"/g' > ds1.isoforms.results.rename.tsv
+more ds1_all.isoforms.results |sed -r 's/\.[0-9]+\"/\"/g' > ds1_all.isoforms.results.rename.tsv
 ```
 
 **headerの編集**
