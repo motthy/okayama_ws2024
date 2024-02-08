@@ -8,7 +8,7 @@ library(tidyverse)
 
 # count table
 drr <- paste0("DRR", 357080:357084)
-file_kallisto <- file.path("kallisto", drr, "abundance.tsv")
+file_kallisto <- file.path("data/kallisto", drr, "abundance.tsv")
 names(file_kallisto) <- drr
 txi.kallisto <- tximport(file_kallisto,
                          type = "kallisto",
@@ -20,7 +20,7 @@ tx2gene <- data.frame(
 )
 
 write_tsv(tx2gene,
-          file = "tx2gene.tsv")
+          file = "data/kallisto/tx2gene.tsv")
 
 # geneレベルの発現量(raw counts)
 gene.exp_raw <- summarizeToGene(txi.kallisto,
@@ -31,8 +31,8 @@ rawcount <- data.frame(gene.exp_raw$counts) %>%
   separate(rowname,  "\\.",  into = c("gene_id",  "postnum")) %>%
   dplyr::select(!postnum)
 
-write_tsv(rawcount
-          file = "kallisto_count.tsv")
+write_tsv(rawcount,
+          file = "data/kallisto/kallisto_count.tsv")
 
 # geneレベルの発現量(scaledTPM)
 # for edgeR or DESeq2
@@ -46,7 +46,7 @@ tpm <- data.frame(gene.exp$counts) %>%
   dplyr::select(!postnum)
 
 write_tsv(tpm,
-          file = "kallisto_scaledTPM.tsv")
+          file = "data/kallisto/kallisto_scaledTPM.tsv")
 
 # DEG抽出
 # 参考　二群間比較（edgeR）
@@ -117,5 +117,5 @@ lt_dataFDR_anno <- lt_dataFDR %>%
 
 # annotation付きDEG結果
 write_tsv(lt_dataFDR_anno,
-          file = "kallisto_edgeR_LRT_FDR0.05_withanno.tsv")
+          file = "data/kallisto/kallisto_edgeR_LRT_FDR0.05_withanno.tsv")
 
