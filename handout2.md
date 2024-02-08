@@ -143,7 +143,7 @@ more ds1_all.genes.results |sed -r 's/\.[0-9]+\"/\"/g' > ds1.genes.results.renam
 
 transcript levelのカウントテーブル
 ```
-more ds1.isoforms.results |sed -r 's/\.[0-9]+\"/\"/g' > ds1.isoforms.results.rename.tsv
+more ds1_all.isoforms.results |sed -r 's/\.[0-9]+\"/\"/g' > ds1.isoforms.results.rename.tsv
 ```
 
 **headerの編集**
