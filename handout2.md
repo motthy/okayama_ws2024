@@ -277,7 +277,7 @@ txi.kallisto <- tximport(file_kallisto,
                          txOut = TRUE)
 # transcripts-gene
 tx2gene <- data.frame(
-  TXNAME = rownames(txi.kallisto$counts)
+  TXNAME = rownames(txi.kallisto$counts),
   GENEID = sapply(str_split(rownames(txi.kallisto$counts), '\\|'), '[',  2)
 )
 
