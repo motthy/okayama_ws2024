@@ -196,6 +196,11 @@ qsub kallisto_index.sh
 
 #### 2-2. リードカウント
 
+okayama_wsディレクトリに戻る
+```{sh}
+cd ~/okayama_ws
+```
+
 結果をいれるディレクトリをつくる
 ```
 mkdir kallisto
