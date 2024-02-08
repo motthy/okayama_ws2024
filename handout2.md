@@ -213,7 +213,7 @@ mkdir kallisto
 FQLIST="DRR357080 DRR357081 DRR357082 DRR357083 DRR357084"
 
 for SRR in $FQLIST;do
-　mkdir kallisto/$SRR
+mkdir kallisto/$SRR
 done
 ```
 
