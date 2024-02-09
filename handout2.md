@@ -153,8 +153,8 @@ more ds1_all.isoforms.results |sed -r 's/\.[0-9]+\"/\"/g' > ds1_all.isoforms.res
 
 つぎに、実験条件のcsvをつくる
 ```
-id DRR357080 DRR357081 DRR357082 DRR357083 DRR357084
-treatment DMSO DMSO 5H4PB 5H4PB 5H4PB
+id,DRR357080,DRR357081,DRR357082,DRR357083,DRR357084
+treatment,DMSO,DMSO,5H4PB,5H4PB,5H4PB
 ```
 `ds1_experiment.csv`として保存
 
@@ -246,6 +246,8 @@ DRR=${FQLIST[SGE_TASK_ID - 1]}
 qsub kallisto_count.sh
 ```
 10分程度で終わる。各サンプル名のディレクトリに以下の3個のファイルができているはずである。
+
+(スパコンの`/usr/bin/kallisto`を使った場合は**abundance.h5ができない**設定になっています)
 
 - abundance.h5
 - abundance.tsv
